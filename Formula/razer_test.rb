@@ -1,7 +1,7 @@
 class RazerTest < Formula
   desc "Next-gen OpenRazer!"
   homepage "https://github.com/z3ntu/razer_test"
-  url "https://github.com/z3ntu/razer_test/archive/master.tar.gz"
+  url "https://github.com/z3ntu/razer_test/archive/7d866a66e2270fb7ade82eba492106631da9e853.tar.gz"
   version "0.0.1"
   sha256 ""
 
@@ -12,7 +12,7 @@ class RazerTest < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "dbus"
-  depends_on "qt"
+  depends_on "qt@5"
 
   def install
     mkdir "build" do
@@ -24,25 +24,9 @@ class RazerTest < Formula
     end
   end
 
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-
-        <key>ProgramArguments</key>
-        <array>
-            <string>#{bin}/razer_test</string>
-            <string>--verbose</string>
-        </array>
-      </dict>
-    </plist>
-  EOS
+  service do
+    run [opt_bin/"razer_test", "--verbose"]
   end
-
-  plist_options :startup => true, :manual => "razer_test"
 
   test do
     system "#{bin}/razer_test", "--version"
